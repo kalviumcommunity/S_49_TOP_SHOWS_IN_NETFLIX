@@ -1,18 +1,11 @@
-// Use process.env.PORT or default to 3000
-
 const express = require('express');
 const app = express();
-const port = process.env.PUBLIC_PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-// Define the ping route with the response in JSON
-app.get('/ping', (req, res) => {
-    res.json({ message: 'pong' });
-  });
-  
-  if (require.main === module) {
-    app.listen(port, () => {
-      console.log(`🚀 Server running on PORT: ${port}`);
-    });
-  }
-  
-  module.exports = app;
+app.get('/ping',(req, res)=>{
+    res.send('Pong!');
+});
+
+app.listen(PORT, () => {
+    console.log('Server is running on port ${PORT}');
+});
