@@ -1,42 +1,69 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.movies-container {
+  display: flex; /* Use flexbox layout */
+  flex-wrap: nowrap; /* Prevent wrapping to next line */
+  overflow-x: auto; /* Enable horizontal scrolling if content overflows */
+}
+
+.movie {
+  flex: 0 0 auto; /* Let items grow and shrink, but don't allow them to grow beyond their content */
+  margin-right: 20px; /* Add margin between movies */
+}
+
+.movie img {
+  width: 200px; /* Set a fixed width for movie posters */
+}
+
+.movie-info {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.overview {
+  text-align: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+/* new app.css */
+/* App.css */
+
+.App {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.show-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.card {
-  padding: 2em;
+.show-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  width: 300px;
+  color: darkred;
 }
 
-.read-the-docs {
-  color: #888;
+.show-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.show-card p {
+  margin: 5px 0;
+}
+
+.show-card a {
+  display: block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.show-card a:hover {
+  text-decoration: underline;
 }
