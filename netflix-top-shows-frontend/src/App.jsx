@@ -1,10 +1,10 @@
+
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import axios from 'axios';
-import AddShowForm from './Compounts/AddShowForm';
 
 function App() {
-  const [shows, setShows] = useState([]);
+  const [shows, setShows] = useState([]); 
 
   useEffect(() => {
     axios.get('http://localhost:3000/shows')
@@ -15,14 +15,9 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
-  const handleShowAdded = (newShow) => {
-    setShows([...shows, newShow]);
-  };
-
   return (
     <div className="App">
       <h1>TV Shows In Netflix</h1>
-      <AddShowForm onShowAdded={handleShowAdded} />
       <div className="show-container">
         {shows.map(show => (
           <div className="show-card" key={show.title}>
