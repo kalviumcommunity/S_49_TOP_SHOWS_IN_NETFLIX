@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 import './AddShowForm.css'; // Importing CSS file for styling
 
-const AddShowForm = ({ onShowAdded }) => {
+const AddShowForm = ({ onShowAdded, onShowUpdated, onShowDeleted }) => {
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -31,29 +31,46 @@ const AddShowForm = ({ onShowAdded }) => {
     e.preventDefault();
     console.log("Form data:", formData); // Log form data
     try {
+      if (formData.id) {
+        // Update existing show
+        const response = await axios.put(`http://localhost:3000/shows/${formData.id}`, formData);
+        onShowUpdated(response.data);
+      } else {
+        // Add new show
         const response = await axios.post('http://localhost:3000/shows', formData);
         onShowAdded(response.data);
-        setFormData({
-            title: "",
-            image: "",
-            year: "",
-            certificate: "",
-            runtime: "",
-            genre: "",
-            rating: "",
-            description: "",
-            director: "",
-            stars: "",
-            votes: "",
-            url: ""
-        });
-        toggleModal();
+      }
+      setFormData({
+        title: "",
+        image: "",
+        year: "",
+        certificate: "",
+        runtime: "",
+        genre: "",
+        rating: "",
+        description: "",
+        director: "",
+        stars: "",
+        votes: "",
+        url: ""
+      });
+      toggleModal();
     } catch (error) {
-        console.error(error);
-        // Handle error: display a message to the user or perform other actions
+      console.error(error);
+      // Handle error: display a message to the user or perform other actions
     }
-};
+  };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/shows/${formData.id}`);
+      onShowDeleted(formData.id);
+      toggleModal();
+    } catch (error) {
+      console.error(error);
+      // Handle error: display a message to the user or perform other actions
+    }
+  };
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -61,7 +78,7 @@ const AddShowForm = ({ onShowAdded }) => {
 
   return (
     <div className="add-show-form">
-      <button onClick={toggleModal} className="toggle-button">Add Show</button>
+      <button onClick={() => {setFormData({}); toggleModal();}} className="toggle-button">Add Show</button>
       {showModal &&
         <div className="modal">
           <div className="modal-content">
@@ -79,7 +96,8 @@ const AddShowForm = ({ onShowAdded }) => {
               <input type="text" name="stars" value={formData.stars} onChange={handleChange} placeholder="Stars" required />
               <input type="text" name="votes" value={formData.votes} onChange={handleChange} placeholder="Votes" required />
               <input type="text" name="url" value={formData.url} onChange={handleChange} placeholder="IMDb URL" required />
-              <button type="submit">Add Show</button>
+              <button type="submit">{formData.id ? "Update Show" : "Add Show"}</button>
+              {formData.id && <button type="button" onClick={handleDelete}>Delete Show</button>}
             </form>
           </div>
         </div>

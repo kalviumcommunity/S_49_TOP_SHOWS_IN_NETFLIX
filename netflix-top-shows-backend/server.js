@@ -130,7 +130,8 @@ app.delete('/shows/:id', async (req, res) => {
   }
 });
 
-
+const routes = require('./routes')
+app.use('/netflix', routes);
 
 Connection().then(()=>{
   
