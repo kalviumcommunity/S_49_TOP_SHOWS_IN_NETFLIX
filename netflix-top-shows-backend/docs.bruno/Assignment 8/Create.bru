@@ -1,0 +1,20 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/Netflix/movie
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": 3,
+    "movie":"name",
+    "rating":"10"
+    
+  }
+}
