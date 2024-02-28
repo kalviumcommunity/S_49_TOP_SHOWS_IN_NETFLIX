@@ -50,6 +50,8 @@ async function signUpController(req, res) {
     await newsignup.save();
 
     res.status(201).send('signup  successful');
+
+    
   } catch (error) {
     console.error('Error submitting signup:', error);
     res.status(500).send('Internal Error');
