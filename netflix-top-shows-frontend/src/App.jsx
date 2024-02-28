@@ -6,7 +6,7 @@ import NetflixLoginPage from './Compounts/NetflixLoginPage';
 
 function App() {
   const [shows, setShows] = useState([]);
-  const [selectedShow, setSelectedShow] = useState(null);
+ 
   const [isLoggingIn, setIsLoggingIn] = useState(false); // State to manage login page display
 
   useEffect(() => {
@@ -26,41 +26,55 @@ function App() {
     setShows([...shows, newShow]);
   };
 
-  const handleShowUpdated = async (updatedShow) => {
-    try {
-      await axios.put(`http://localhost:3000/shows/${updatedShow.id}`, updatedShow);
-      const updatedShows = shows.map(show => (show.id === updatedShow.id ? updatedShow : show));
-      setShows(updatedShows);
-      setSelectedShow(null); // Clear selected show after update
-    } catch (error) {
-      console.error('Error updating show:', error);
-    }
-  };
 
-  const handleEditShow = (show) => {
-    setSelectedShow(show);
-  };
+
 
   const handleSignInClick = () => {
     setIsLoggingIn(true);
   };
 
+  const handleDeleteClick = async (title) => {
+    console.log("Deleting show with title:", title);
+    // Show a confirmation dialog before deleting
+    const confirmDelete = window.confirm(`Are you sure you want to delete the show ?`);
+    if (!confirmDelete) {
+      return; // If user cancels, do nothing
+    }
+    try {
+      console.log(title)
+      // Send a delete request to the server with the title of the show to be deleted
+      await axios.delete(`http://localhost:3000/shows/${title}`);
+      // If the delete request is successful, update the state to remove the show
+      setShows(prevShows => prevShows.filter(show => show.title !== title));
+      
+      // Reload the page after deletion
+      window.location.reload();
+
+    } catch (error) {
+      console.error('Error deleting show:', error);
+    }
+};
+
+
   return (
     <div className="App">
       <h1>TV Shows In Netflix</h1>
+      
       <div className="header">
         {!isLoggingIn ? (
           <button onClick={handleSignInClick}>Sign In</button>
         ) : null}
       </div>
+      
       {isLoggingIn ? (
+
         <NetflixLoginPage />
       ) : (
         <>
           <AddShowForm
             onShowAdded={handleShowAdded}
-            onShowUpdated={handleShowUpdated}
-            selectedShow={selectedShow}
+            
+            
           />
           <div className="show-container">
             {shows.map(show => (
@@ -77,6 +91,8 @@ function App() {
                 <p><strong>Stars:</strong> {show.stars.join(', ')}</p>
                 <p><strong>Votes:</strong> {show.votes}</p>
                 <a href={show.url} target="_blank" rel="noopener noreferrer">IMDb Link</a>
+                <button onClick={() => handleDeleteClick(show._id)}>Delete</button>
+
               </div>
             ))}
           </div>
@@ -87,3 +103,4 @@ function App() {
 }
 
 export default App;
+

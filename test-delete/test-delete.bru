@@ -1,0 +1,18 @@
+meta {
+  name: test-delete
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/signup
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email":"u",
+    "password":"dfgh"
+  }
+}
