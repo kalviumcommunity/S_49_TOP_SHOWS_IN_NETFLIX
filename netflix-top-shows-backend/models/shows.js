@@ -8,6 +8,7 @@ const ShowsSchema = new mongoose.Schema({
     runtime: String,
     genre: Array,
     rating: String,
+    
     director: String,
     stars: Array,
     votes:String,
