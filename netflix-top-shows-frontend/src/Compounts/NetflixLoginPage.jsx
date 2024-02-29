@@ -6,7 +6,7 @@ import './NetflixLoginPage.css';
 
 const NetflixLoginPage = () => {
     const [values, setValues] = useState({
-        emailPhone: '',
+        email: '',
         password: ''
     });
     const [errors, setErrors] = useState({});
@@ -20,8 +20,7 @@ const NetflixLoginPage = () => {
         event.preventDefault();
         
         try {
-            await schema.validateAsync(values, { abortEarly: false });
-            const response = await axios.post('http://localhost:8801/signup', values);
+            const response = await axios.post('http://localhost:8801/api/signup');
             console.log(response);
             navigate('/');
         } catch (error) {
@@ -46,9 +45,9 @@ const NetflixLoginPage = () => {
                 <h2>Sign In</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-control">
-                        <input type="text" name="emailPhone" value={values.emailPhone} onChange={handleInput} required />
+                        <input type="text" name="email" value={values.email} onChange={handleInput} required />
                         <label htmlFor="email-phone">Email or phone number</label>
-                        {errors.emailPhone && <p className="error-message">{errors.emailPhone}</p>}
+                        {errors.email && <p className="error-message">{errors.email}</p>}
                     </div>
                     <div className="form-control">
                         <input type="password" name="password" value={values.password} onChange={handleInput} required />
