@@ -8,6 +8,7 @@ const {signup,schema}=require('./models/login');
 
 const ShowsModel=require('./models/shows')
 const cookieParser = require("cookie-parser");
+const jwt=require('jsonwebtoken')
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,7 @@ const port = process.env.PUBLIC_PORT || 3000;
 app.use(express.json());
 
 const uri = process.env.DATABASE_URL;
+const key=process.env.JWT_KEY;
 
 async function Connection(){
     await mongoose.connect(uri)
@@ -85,8 +87,10 @@ app.post("/api/signup", async (req, res) => {
 
     const newUser = new signup({ email,password });
     await newUser.save();
+    const token=jwt.sign({email},key,{expiresIn:"17h"});
 
     res.cookie("email", email);
+    res.cookie("jwt",token);
 
     res.json({
       success: true,
