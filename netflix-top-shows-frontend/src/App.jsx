@@ -3,6 +3,7 @@ import "./App.css";
 import axios from 'axios';
 import AddShowForm from './Compounts/AddShowForm';
 import NetflixLoginPage from './Compounts/NetflixLoginPage';
+import Filter from './Compounts/Filter/Filter'
 
 function App() {
   const [shows, setShows] = useState([]);
@@ -25,9 +26,6 @@ function App() {
   const handleShowAdded = (newShow) => {
     setShows([...shows, newShow]);
   };
-
-
-
 
   const handleSignInClick = () => {
     setIsLoggingIn(true);
@@ -59,6 +57,7 @@ function App() {
   return (
     <div className="App">
       <h1>TV Shows In Netflix</h1>
+      <Filter></Filter>
       
       <div className="header">
         {!isLoggingIn ? (
