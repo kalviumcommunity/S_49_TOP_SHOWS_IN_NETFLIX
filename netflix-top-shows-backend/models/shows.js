@@ -14,6 +14,7 @@ const ShowsSchema = new mongoose.Schema({
     votes:String,
     url: String,
     description: String,
+    email: String
 });
 
 const ShowsModel = mongoose.model("Shows", ShowsSchema);
