@@ -90,7 +90,6 @@ const NetflixLoginPage = () => {
 
         try {
             Cookies.set("email",values.email)
-            localStorage.setItem("email",values.email);
             const response = await axios.post('http://localhost:3000/api/signup', {
                 email: values.email, // Fix: Pass email and password as an object
                 password: values.password

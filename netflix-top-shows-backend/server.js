@@ -39,11 +39,6 @@ app.get('/shows',async (req,res)=>{
        res.send(value)
 })
 
-app.get('/signups',async (req,res)=>{    
-  let value=await  getAll();
-  res.send(value)
-})
-
 
 // async function signUpController(req, res) {
 //   try {
@@ -135,7 +130,6 @@ app.post('/shows', async (req, res) => {
         votes: data.votes,
         url: data.url,
         description: data.description,
-        email:data.email
       });
     
       res.status(201).json(newShow);
