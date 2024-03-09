@@ -3,50 +3,12 @@ import "./App.css";
 import axios from 'axios';
 import AddShowForm from './Compounts/AddShowForm';
 import NetflixLoginPage from './Compounts/NetflixLoginPage';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
-import Filter from "./Compounts/Filter";
-import Cookies from 'js-cookie'; // Import Cookies
+import Filter from './Compounts/Filter/Filter'
 
 function App() {
-  const [emails, setemails] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
-  const navigate = useNavigate(); // Import useNavigate
-
-  useEffect(() => {
-    const fetchUsernames = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/signups');
-        const userEmails = response.data.map(user => user.email);
-        setemails(userEmails);
-  
-        // Set initial value of selectedUser from cookie
-        const emailFromCookie = Cookies.get('email');
-        if (emailFromCookie && userEmails.includes(emailFromCookie)) {
-          setSelectedUser(emailFromCookie);
-        }
-      } catch (error) {
-        console.error('Error fetching emails:', error);
-      }
-    };
-  
-    fetchUsernames();
-  }, []);
-  
-
-  const handleLogout = () => {
-    Cookies.remove('email');
-    Cookies.remove('token');
-    window.location.reload();
-  };
-
-  const handleUserChange = (event) => {
-    const selectedemail = event.target.value;
-    setSelectedUser(selectedemail);
-    navigate(`/shows/${selectedemail}`); // Navigate to ReviewsByUser component
-  };
-
   const [shows, setShows] = useState([]);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+ 
+  const [isLoggingIn, setIsLoggingIn] = useState(false); // State to manage login page display
 
   useEffect(() => {
     fetchShows();
@@ -69,54 +31,53 @@ function App() {
     setIsLoggingIn(true);
   };
 
-  const handleDeleteClick = async (id) => {
-    console.log("Deleting show with ID:", id);
+  const handleDeleteClick = async (title) => {
+    console.log("Deleting show with title:", title);
+    // Show a confirmation dialog before deleting
     const confirmDelete = window.confirm(`Are you sure you want to delete the show ?`);
     if (!confirmDelete) {
-      return;
+      return; // If user cancels, do nothing
     }
     try {
-      await axios.delete(`http://localhost:3000/shows/${id}`);
-      setShows(prevShows => prevShows.filter(show => show._id !== id));
+      console.log(title)
+      // Send a delete request to the server with the title of the show to be deleted
+      await axios.delete(`http://localhost:3000/shows/${title}`);
+      // If the delete request is successful, update the state to remove the show
+      setShows(prevShows => prevShows.filter(show => show.title !== title));
+      
+      // Reload the page after deletion
+      window.location.reload();
+
     } catch (error) {
       console.error('Error deleting show:', error);
     }
-  };
+};
+
 
   return (
     <div className="App">
       <h1>TV Shows In Netflix</h1>
+      <Filter></Filter>
+      
       <div className="header">
         {!isLoggingIn ? (
           <button onClick={handleSignInClick}>Sign In</button>
         ) : null}
       </div>
+      
       {isLoggingIn ? (
+
         <NetflixLoginPage />
       ) : (
         <>
           <AddShowForm
             onShowAdded={handleShowAdded}
+            
+            
           />
-          <div className="navbar-item">
-            <Link to="/" onClick={handleLogout}>
-              <span className="link-text">Log out</span>
-            </Link>
-          </div>
-          <div className="navbar-item dropdown">
-            <span className="link-text">{selectedUser}</span>
-            <div className="dropdown-content">
-              <select name="dropdown-content" id="dropdown-content" value={selectedUser} onChange={handleUserChange}>
-                <option value="">Select email</option>
-                {emails.map((email, index) => (
-                  <option key={index} value={email}>{email}</option>
-                ))}
-              </select>
-            </div>
-          </div>
           <div className="show-container">
             {shows.map(show => (
-              <div className="show-card" key={show._id}>
+              <div className="show-card" key={show.id}>
                 <h2>{show.title}</h2>
                 <img src={show.image} alt={show.title} />
                 <p><strong>Year:</strong> {show.year}</p>
@@ -130,18 +91,14 @@ function App() {
                 <p><strong>Votes:</strong> {show.votes}</p>
                 <a href={show.url} target="_blank" rel="noopener noreferrer">IMDb Link</a>
                 <button onClick={() => handleDeleteClick(show._id)}>Delete</button>
+
               </div>
             ))}
           </div>
         </>
       )}
-      <Routes>
-      <Route path="/shows/:email" element={<Filter/>} />
-      </Routes>
     </div>
   );
 }
 
-
 export default App;
-

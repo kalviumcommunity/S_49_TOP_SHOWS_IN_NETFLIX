@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import './AddShowForm.css'; // Importing CSS file for styling
-import Cookies from "js-cookie";
- 
-
-
-
 
 const AddShowForm = ({ onShowAdded, onShowUpdated, onShowDeleted }) => {
   const [formData, setFormData] = useState({
@@ -20,9 +15,7 @@ const AddShowForm = ({ onShowAdded, onShowUpdated, onShowDeleted }) => {
     director: "",
     stars: "",
     votes: "",
-    url: "",
-    email:localStorage.getItem("email")
-    
+    url: ""
   });
   const [showModal, setShowModal] = useState(false); // State to toggle modal display
 
@@ -30,16 +23,12 @@ const AddShowForm = ({ onShowAdded, onShowUpdated, onShowDeleted }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
-      email:localStorage.getItem("email")
+      [name]: value
     });
-    console.log(formData)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let x= Cookies.get('email');
-    console.log("dfg",x);
     console.log("Form data:", formData); // Log form data
     try {
       if (formData.id) {
@@ -63,8 +52,7 @@ const AddShowForm = ({ onShowAdded, onShowUpdated, onShowDeleted }) => {
         director: "",
         stars: "",
         votes: "",
-        url: "",
-        email:localStorage.getItem("email")
+        url: ""
       });
       toggleModal();
     } catch (error) {
