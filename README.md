@@ -13,7 +13,6 @@ The website is designed to suggest good movies and shows available on Netflix to
 - **Basic Interface:** The website features a simple and intuitive interface for easy navigation.
 
 ## Deployment Links:
-- **Deployment Link:**  https://top-shows-in-netflix.netlify.app/
-- **Render Link:**  https://s-49-top-shows-in-netflix-3.onrender.com
-
+- **Deployment Link:**  https://netflixin.netlify.app/
+- **Render Link:**  https://s-49-top-shows-in-netflix-4.onrender.com/
 Feel free to explore the recommendations and enjoy discovering new content on Netflix!
